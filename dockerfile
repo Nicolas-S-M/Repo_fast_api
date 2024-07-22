@@ -8,6 +8,8 @@ WORKDIR /fast_api
 
 RUN pip install poetry
 
+RUN pwd && ls -la
+
 RUN poetry config virtualenvs.create false \
     && poetry install --no-dev --no-interaction --no-ansi
 
