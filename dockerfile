@@ -2,7 +2,7 @@ FROM python:3.12
 
 RUN apt-get update && apt-get upgrade -y
 
-COPY ./Repo_fast_api /Repo_fast_api
+COPY . /Repo_fast_api
 
 WORKDIR /Repo_fast_api
 
