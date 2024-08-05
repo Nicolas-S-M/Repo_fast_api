@@ -28,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{secrets.DOCKER_NAME}}/${{github.run_number}}
+          tags: ${{secrets.DOCKER_NAME}}/fast_api.${{github.run_number}}
