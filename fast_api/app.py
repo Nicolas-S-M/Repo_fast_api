@@ -13,7 +13,7 @@ app = FastAPI()
 
 @app.get('/', status_code=HTTPStatus.OK, response_model=Message)
 def read_root():
-    return {'message': 'Ola mundo!'}
+    return {'message': 'Olá mundo!'}
 
 
 @app.post('/users/', status_code=HTTPStatus.CREATED, response_model=UserDB)
