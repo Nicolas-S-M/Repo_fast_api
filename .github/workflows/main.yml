@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: false
+          load: true
           tags: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
 
       - name: Scan Docker image with Trivy
