@@ -1,0 +1,5 @@
+tests
+migrations/__pycache__
+migrations/versions/__pycache__
+fast_api/__pycache__
+fast_api/__init__.py
