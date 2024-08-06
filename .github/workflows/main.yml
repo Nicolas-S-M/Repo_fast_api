@@ -27,8 +27,15 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
+          push: false
           tags: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        id: trivy
+        with:
+          image-ref: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
+          exit-code: '1'
 
       - name: Checkout private repo
         uses: actions/checkout@v3
@@ -36,11 +43,21 @@ jobs:
           repository: Nicolas-S-M/Repo_fast_api_priv
           token: ${{secrets.ACESS_TOKEN}}
 
+      - name: Push Docker image
+        if: steps.trivy.outputs.exit-code == '0'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
+          
       - name: Update values.yaml
+        if: steps.trivy.outputs.exit-code == '0'
         run: |
           sed -i 's|repository:.*|repository: '${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}'|' values.yaml
 
       - name: Commit and push changes
+        if: steps.trivy.outputs.exit-code == '0'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
