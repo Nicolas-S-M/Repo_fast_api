@@ -23,6 +23,11 @@ jobs:
           username: ${{secrets.DOCKER_NAME}}
           password: ${{secrets.DOCKER_PASSWORD}}
 
+      - name: Test
+        run: |
+          ls
+          pwd
+
       - name: Push docker image
         uses: docker/build-push-action@v6
         with:
