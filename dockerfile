@@ -1,7 +1,6 @@
 FROM python:3.12-alpine
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache gcc musl-dev libffi-dev
+RUN apk update && apk upgrade 
 
 COPY . /Repo_fast_api
 
