@@ -22,13 +22,8 @@ jobs:
         with:
           username: ${{secrets.DOCKER_NAME}}
           password: ${{secrets.DOCKER_PASSWORD}}
-
-      - name: Test
-        run: |
-          ls
-          pwd
-
-      - name: Push docker image
+          
+      - name: Load docker image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -42,19 +37,18 @@ jobs:
           image-ref: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
           exit-code: '1'
 
+      - name: Push Docker image
+        if: steps.trivy.outputs.exit-code == '0'
+        run: |
+          docker tag ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}} ${{secrets.DOCKER_NAME}}/fast_api:latest
+          docker push ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
+          docker push ${{secrets.DOCKER_NAME}}/fast_api:latest
+
       - name: Checkout private repo
         uses: actions/checkout@v3
         with:
           repository: Nicolas-S-M/Repo_fast_api_priv
           token: ${{secrets.ACESS_TOKEN}}
-
-      - name: Push Docker image
-        if: steps.trivy.outputs.exit-code == '0'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
           
       - name: Update values.yaml
         if: steps.trivy.outputs.exit-code == '0'
