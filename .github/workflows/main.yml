@@ -50,7 +50,6 @@ jobs:
   push-and-update:
     runs-on: ubuntu-latest
     needs: [ci-work, manual-approval]
-    if: steps.trivy.outputs.exit-code == '0'
     steps:
       - name: Push Docker image
         run: |
