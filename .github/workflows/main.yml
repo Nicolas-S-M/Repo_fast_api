@@ -40,9 +40,11 @@ jobs:
       - name: Trivy output
         id: trivy_output
         run: |
-          trivy image ${{ secrets.DOCKER_NAME }}/fast_api:${{ github.run_number }} > trivy_output.txt
+          TRIVY_OUTPUT=$(cat ${{ steps.trivy.outputs.stdout }})
           TOTAL_LINE=$(grep 'Total:' trivy_output.txt)
-          echo "TOTAL_LINE=${TOTAL_LINE}" >> $GITHUB_ENV
+          echo "$TRIVY_OUTPUT" | grep '^Total:' > trivy-total.txt
+          TOTAL_LINE=$(cat trivy-total.txt)
+          echo "TRIVY_TOTAL_LINE=${TOTAL_LINE}" >> $GITHUB_ENV
           
       - name: Manual Approval
         uses: trstringer/manual-approval@v1
