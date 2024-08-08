@@ -36,11 +36,6 @@ jobs:
         with:
           image-ref: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
           exit-code: '1'
-
-      - name: Trivy output
-        id: trivy_output
-        run: |
-          cat ${{ steps.trivy.outputs.stdout }}
           
       - name: Manual Approval
         uses: trstringer/manual-approval@v1
