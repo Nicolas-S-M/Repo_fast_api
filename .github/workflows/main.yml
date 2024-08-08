@@ -5,7 +5,8 @@ on: [pull_request, push]
 jobs:
   ci-work:
     runs-on: ubuntu-latest
-
+    
+    environment: ManualApproval
     steps:
       - uses: actions/checkout@v3
 
