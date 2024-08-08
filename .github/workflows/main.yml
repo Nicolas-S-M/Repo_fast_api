@@ -40,7 +40,6 @@ jobs:
   manual-approval:
     runs-on: ubuntu-latest
     needs: ci-work
-    if: steps.trivy.outputs.exit-code == '1'
     environment:
       name: ManualApproval
       url: https://github.com/your-repo/actions
