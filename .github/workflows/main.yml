@@ -40,8 +40,8 @@ jobs:
       - name: Manual Approval
         uses: trstringer/manual-approval@v1
         with:
-          secret: ${{github.TOKEN}}
-          approvers: Org-Nicolas-S-M
+          secret: ${{secrets.MANUAL_TOKEN}}
+          approvers: Nicolas-S-M
           minimum-approvals: 1
           issue-title: "Approve scan"
           issue-body: "Approve or deny"
