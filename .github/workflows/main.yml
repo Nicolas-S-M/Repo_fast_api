@@ -36,6 +36,13 @@ jobs:
         with:
           image-ref: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
           exit-code: '1'
+
+      - name: Trivy output
+        id: trivy_output
+        run: |
+          trivy image ${{ secrets.DOCKER_NAME }}/fast_api:${{ github.run_number }} > trivy_output.txt
+          TOTAL_LINE=$(grep 'Total:' trivy_output.txt)
+          echo "TOTAL_LINE=${TOTAL_LINE}" >> $GITHUB_ENV
           
       - name: Manual Approval
         uses: trstringer/manual-approval@v1
@@ -44,7 +51,7 @@ jobs:
           approvers: Nicolas-S-M
           minimum-approvals: 1
           issue-title: "Approve scan"
-          issue-body: "Approve or deny"
+          issue-body: "$TOTAL_LINE"
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: ''
           additional-denied-words: ''
