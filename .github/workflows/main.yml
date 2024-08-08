@@ -40,9 +40,7 @@ jobs:
       - name: Trivy output
         id: trivy_output
         run: |
-          TRIVY_OUTPUT=$(cat ${{ steps.trivy.outputs.stdout }})
-          TOTAL_LINE=$(echo $TRIVY_OUTPUT | grep Total:)
-          echo "TRIVY_TOTAL_LINE=${TOTAL_LINE}" >> $GITHUB_ENV
+          cat ${{ steps.trivy.outputs.stdout }}
           
       - name: Manual Approval
         uses: trstringer/manual-approval@v1
@@ -51,7 +49,7 @@ jobs:
           approvers: Nicolas-S-M
           minimum-approvals: 1
           issue-title: "Approve scan"
-          issue-body: "$TRIVY_TOTAL_LINE"
+          issue-body: "Approve or deny"
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: ''
           additional-denied-words: ''
