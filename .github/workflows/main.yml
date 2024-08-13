@@ -56,11 +56,15 @@ jobs:
           additional-denied-words: ''
 
       - name: Push Docker image
-        if: steps.trivy.outputs.exit-code == '0'
         run: |
           docker tag ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}} ${{secrets.DOCKER_NAME}}/fast_api:latest
           docker push ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
           docker push ${{secrets.DOCKER_NAME}}/fast_api:latest
+
+      - name: Clean the workspace
+        uses: docker://alpine
+        with:
+          args: /bin/sh -c "find \"${GITHUB_WORKSPACE}\" -mindepth 1 ! -name . -prune -exec rm -rf {} +"
 
       - name: Checkout private repo
         uses: actions/checkout@v3
@@ -69,12 +73,10 @@ jobs:
           token: ${{secrets.ACESS_TOKEN}}
           
       - name: Update values.yaml
-        if: steps.trivy.outputs.exit-code == '0'
         run: |
           sed -i 's|repository:.*|repository: '${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}'|' values.yaml
 
       - name: Commit and push changes
-        if: steps.trivy.outputs.exit-code == '0'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
