@@ -13,4 +13,4 @@ RUN poetry lock && \
     poetry config virtualenvs.create false \
     && poetry install --no-dev --no-interaction --no-ansi
 
-CMD ["uvicorn", "fast_api.app:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["poetry", "run", "uvicorn", "fast_api.app:app", "--host", "0.0.0.0", "--port", "8080"]
