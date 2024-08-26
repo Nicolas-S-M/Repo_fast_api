@@ -74,7 +74,7 @@ jobs:
           
       - name: Update values.yaml
         run: |
-          sed -i 's|repository:.*|repository: '${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}'|' values.yaml
+          sed -i '/repository: nicolassm\//s|repository:.*|image: '${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}'|' values.yaml
 
       - name: Commit and push changes
         run: |
