@@ -42,18 +42,6 @@ jobs:
         with:
           image-ref: ${{secrets.DOCKER_NAME}}/fast_api:${{github.run_number}}
           exit-code: '1'
-          
-      - name: Manual Approval
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{secrets.MANUAL_TOKEN}}
-          approvers: Nicolas-S-M
-          minimum-approvals: 1
-          issue-title: "Approve scan"
-          issue-body: "Approve or deny"
-          exclude-workflow-initiator-as-approver: false
-          additional-approved-words: ''
-          additional-denied-words: ''
 
       - name: Push Docker image
         run: |
