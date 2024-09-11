@@ -7,9 +7,7 @@ COPY . /Repo_fast_api
 
 WORKDIR /Repo_fast_api
 
-RUN pip install poetry alembic
-
-RUN poetry run alembic upgrade head
+RUN pip install poetry
 
 RUN poetry lock && \
     poetry config virtualenvs.create false \
