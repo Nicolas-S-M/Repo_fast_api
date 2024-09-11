@@ -9,10 +9,10 @@ WORKDIR /Repo_fast_api
 
 RUN pip install poetry alembic
 
+RUN poetry run alembic upgrade head
+
 RUN poetry lock && \
     poetry config virtualenvs.create false \
     && poetry install --no-dev --no-interaction --no-ansi
-
-RUN alembic upgrade head
 
 CMD ["poetry", "run", "uvicorn", "fast_api.app:app", "--host", "0.0.0.0", "--port", "8080"]
